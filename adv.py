@@ -42,7 +42,7 @@ while stk.size() > 0:
     if rm_id not in g.vertices:
         g.add_vertex(rm_id)
 
-    rm_connected = rm.getExits()
+    rm_connected = rm.get_exits()
     for drt in rm_connected:
         rm_connected = rm.get_room_in_direction(drt)
         rm_connected_id = rm_connected.id
@@ -84,6 +84,18 @@ def bfs_search_rooms(rm_id, visited, g=g):
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+## Logic to search room map and use BFS ##
+visited = set()
+visited.add(start_rm.id)
+curr_rm_id = start_rm.id
+num_rms = len(g.vertices)
+while len(visited) < num_rms:
+    mvmts = bfs_search_rooms(curr_rm_id, visited)
+    for direct in mvmts:
+        player.travel(direct)
+        traversal_path.append(direct)
+        visited.add(player.current_room.id)
+    curr_rm_id = player.current_room.id
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -105,12 +117,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
